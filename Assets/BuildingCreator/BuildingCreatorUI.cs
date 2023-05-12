@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class BuildingCreatorUI : EditorWindow
 {
+    private Texture2D[] textures = new Texture2D[15];
+    private Sprite[] sprite = new Sprite[15];
+
     private GameObject[] prefubs = new GameObject[11];
     private GameObject _parent;
     private GameObject current;
@@ -12,12 +15,20 @@ public class BuildingCreatorUI : EditorWindow
     private int counter = 0;
     private int rotation = 0;
 
+    private Vector2 scrollPos;
+    private Vector2 mainScrollPos;
+
     private Vector3Int start;
     private Vector3Int end;
     private Vector3Int plusPos;
     private Vector3Int currentVector = Vector3Int.zero;
 
-    bool[] active = new bool[] { true, true };
+    private Material currentMaterial;
+    private Material[] materials = new Material[3];
+
+    private Color[] materialButtonColor = new Color[3];
+
+    bool[] active = new bool[] { true, true, true, true };
     bool[] creatorActive = new bool[]{ true, true, true, true };
     [MenuItem("Builder/Builder Creator")]
     static void EditorInit()
@@ -28,6 +39,7 @@ public class BuildingCreatorUI : EditorWindow
 
     private void OnGUI()
     {
+        mainScrollPos = EditorGUILayout.BeginScrollView(mainScrollPos);
         counter = EditorGUILayout.IntField("Current number", counter);
         GUI.contentColor = Color.green;
         EditorGUILayout.LabelField("Position: "+ currentVector);
@@ -46,7 +58,7 @@ public class BuildingCreatorUI : EditorWindow
         if (creatorActive[0])
         {
             EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button(new GUIContent("T1", "Wall"), GUILayout.Width(40), GUILayout.Height(40)))
+            if (GUILayout.Button(new GUIContent("T1", textures[0] ,"Wall"), GUILayout.Width(40), GUILayout.Height(40)))
             {
                 if (_parent != null)
                 {
@@ -57,7 +69,7 @@ public class BuildingCreatorUI : EditorWindow
                     CreatorNotParent(0);
                 }
             }
-            if (GUILayout.Button(new GUIContent("T2", "Wall with window"), GUILayout.Width(40), GUILayout.Height(40)))
+            if (GUILayout.Button(new GUIContent("T2", textures[1], "Wall with window"), GUILayout.Width(40), GUILayout.Height(40)))
             {
                 if (_parent != null)
                 {
@@ -68,7 +80,7 @@ public class BuildingCreatorUI : EditorWindow
                     CreatorNotParent(1);
                 }
             }
-            if (GUILayout.Button(new GUIContent("T3", "Wall with door"), GUILayout.Width(40), GUILayout.Height(40)))
+            if (GUILayout.Button(new GUIContent("T3", textures[2], "Wall with door"), GUILayout.Width(40), GUILayout.Height(40)))
             {
                 if (_parent != null)
                 {
@@ -85,7 +97,7 @@ public class BuildingCreatorUI : EditorWindow
         if (creatorActive[1])
         {
             EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button(new GUIContent("T4", "Double wall"), GUILayout.Width(40), GUILayout.Height(40)))
+            if (GUILayout.Button(new GUIContent("T4", textures[3], "Double wall"), GUILayout.Width(40), GUILayout.Height(40)))
             {
                 if (_parent != null)
                 {
@@ -96,7 +108,7 @@ public class BuildingCreatorUI : EditorWindow
                     CreatorNotParent(3);
                 }
             }
-            if (GUILayout.Button(new GUIContent("T5", "Double wall with door"), GUILayout.Width(40), GUILayout.Height(40)))
+            if (GUILayout.Button(new GUIContent("T5", textures[4], "Double wall with door"), GUILayout.Width(40), GUILayout.Height(40)))
             {
                 if (_parent != null)
                 {
@@ -107,7 +119,7 @@ public class BuildingCreatorUI : EditorWindow
                     CreatorNotParent(4);
                 }
             }
-            if (GUILayout.Button(new GUIContent("T6", "Double wall with door and window"), GUILayout.Width(40), GUILayout.Height(40)))
+            if (GUILayout.Button(new GUIContent("T6", textures[5], "Double wall with door and window"), GUILayout.Width(40), GUILayout.Height(40)))
             {
                 if (_parent != null)
                 {
@@ -118,7 +130,7 @@ public class BuildingCreatorUI : EditorWindow
                     CreatorNotParent(5);
                 }
             }
-            if (GUILayout.Button(new GUIContent("T7", "Double wall with one window top"), GUILayout.Width(40), GUILayout.Height(40)))
+            if (GUILayout.Button(new GUIContent("T7", textures[6], "Double wall window top"), GUILayout.Width(40), GUILayout.Height(40)))
             {
                 if (_parent != null)
                 {
@@ -129,7 +141,7 @@ public class BuildingCreatorUI : EditorWindow
                     CreatorNotParent(6);
                 }
             }
-            if (GUILayout.Button(new GUIContent("T8", "Double wall with one window bottom"), GUILayout.Width(40), GUILayout.Height(40)))
+            if (GUILayout.Button(new GUIContent("T8", textures[7], "Double wall window bottom"), GUILayout.Width(40), GUILayout.Height(40)))
             {
                 if (_parent != null)
                 {
@@ -140,7 +152,7 @@ public class BuildingCreatorUI : EditorWindow
                     CreatorNotParent(7);
                 }
             }
-            if (GUILayout.Button(new GUIContent("T9", "Double wall with two window"), GUILayout.Width(40), GUILayout.Height(40)))
+            if (GUILayout.Button(new GUIContent("T9", textures[8], "Double wall with two window"), GUILayout.Width(40), GUILayout.Height(40)))
             {
                 if (_parent != null)
                 {
@@ -157,7 +169,7 @@ public class BuildingCreatorUI : EditorWindow
         if (creatorActive[2])
         {
             EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button(new GUIContent("T10", "Garden stone wall"), GUILayout.Width(40), GUILayout.Height(40)))
+            if (GUILayout.Button(new GUIContent("T10", textures[9], "Garden stone wall"), GUILayout.Width(40), GUILayout.Height(40)))
             {
                 if (_parent != null)
                 {
@@ -168,7 +180,7 @@ public class BuildingCreatorUI : EditorWindow
                     CreatorNotParent(9);
                 }
             }
-            if (GUILayout.Button(new GUIContent("T11", "Garden stone wall with door"), GUILayout.Width(40), GUILayout.Height(40)))
+            if (GUILayout.Button(new GUIContent("T11", textures[10], "Garden stone wall with door"), GUILayout.Width(40), GUILayout.Height(40)))
             {
                 if (_parent != null)
                 {
@@ -179,6 +191,28 @@ public class BuildingCreatorUI : EditorWindow
                     CreatorNotParent(10);
                 }
             }
+            EditorGUILayout.EndHorizontal();
+        }
+        creatorActive[3] = EditorGUILayout.Foldout(creatorActive[3], "Material");
+        if (creatorActive[3])
+        {
+            EditorGUILayout.BeginHorizontal();
+            GUI.contentColor = materialButtonColor[0];
+            if(GUILayout.Button(new GUIContent("M1", textures[10], "Material 1"), GUILayout.Width(40), GUILayout.Height(40)))
+            {
+                SelectMaterial(0);
+            }
+            GUI.contentColor = materialButtonColor[1];
+            if (GUILayout.Button(new GUIContent("M1", textures[10], "Material 1"), GUILayout.Width(40), GUILayout.Height(40)))
+            {
+                SelectMaterial(1);
+            }
+            GUI.contentColor = materialButtonColor[2];
+            if (GUILayout.Button(new GUIContent("M1", textures[10], "Material 1"), GUILayout.Width(40), GUILayout.Height(40)))
+            {
+                SelectMaterial(2);
+            }
+            GUI.contentColor = Color.white;
             EditorGUILayout.EndHorizontal();
         }
         #endregion
@@ -198,11 +232,36 @@ public class BuildingCreatorUI : EditorWindow
             prefubs[3] = (GameObject)EditorGUILayout.ObjectField(new GUIContent(title = "Double wall"), prefubs[3], typeof(GameObject), true);
             prefubs[4] = (GameObject)EditorGUILayout.ObjectField(new GUIContent(title = "Double wall with door"), prefubs[4], typeof(GameObject), true);
             prefubs[5] = (GameObject)EditorGUILayout.ObjectField(new GUIContent(title = "Double wall with door and window"), prefubs[5], typeof(GameObject), true);
-            prefubs[6] = (GameObject)EditorGUILayout.ObjectField(new GUIContent(title = "Double wall with one window top"), prefubs[6], typeof(GameObject), true);
-            prefubs[7] = (GameObject)EditorGUILayout.ObjectField(new GUIContent(title = "Double wall with one window bottom"), prefubs[7], typeof(GameObject), true);
+            prefubs[6] = (GameObject)EditorGUILayout.ObjectField(new GUIContent(title = "Double wall window top"), prefubs[6], typeof(GameObject), true);
+            prefubs[7] = (GameObject)EditorGUILayout.ObjectField(new GUIContent(title = "Double wall window bottom"), prefubs[7], typeof(GameObject), true);
             prefubs[8] = (GameObject)EditorGUILayout.ObjectField(new GUIContent(title = "Double wall with two window"), prefubs[8], typeof(GameObject), true);
             prefubs[9] = (GameObject)EditorGUILayout.ObjectField(new GUIContent(title = "Garden stone wall"), prefubs[9], typeof(GameObject), true);
             prefubs[10] = (GameObject)EditorGUILayout.ObjectField(new GUIContent(title = "Garden stone wall with door"), prefubs[10], typeof(GameObject), true);
+        }
+        active[2] = EditorGUILayout.Foldout(active[2], "Texture");
+        if (active[2])
+        {
+            scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Height(200));
+            textures[0] = (Texture2D)EditorGUILayout.ObjectField(new GUIContent(title = "Wall"), textures[0], typeof(Texture2D), true);
+            textures[1] = (Texture2D)EditorGUILayout.ObjectField(new GUIContent(title = "Wall with window"), textures[1], typeof(Texture2D), true);
+            textures[2] = (Texture2D)EditorGUILayout.ObjectField(new GUIContent(title = "Wall with door"), textures[2], typeof(Texture2D), true);
+            textures[3] = (Texture2D)EditorGUILayout.ObjectField(new GUIContent(title = "Double wall"), textures[3], typeof(Texture2D), true);
+            textures[4] = (Texture2D)EditorGUILayout.ObjectField(new GUIContent(title = "Double wall with door"), textures[4], typeof(Texture2D), true);
+            textures[5] = (Texture2D)EditorGUILayout.ObjectField(new GUIContent(title = "Double wall with door and window"), textures[5], typeof(Texture2D), true);
+            textures[6] = (Texture2D)EditorGUILayout.ObjectField(new GUIContent(title = "Double wall with one window top"), textures[6], typeof(Texture2D), true);
+            textures[7] = (Texture2D)EditorGUILayout.ObjectField(new GUIContent(title = "Double wall with one window bottom"), textures[7], typeof(Texture2D), true);
+            textures[8] = (Texture2D)EditorGUILayout.ObjectField(new GUIContent(title = "Double wall with two window"), textures[8], typeof(Texture2D), true);
+            textures[9] = (Texture2D)EditorGUILayout.ObjectField(new GUIContent(title = "Garden stone wall"), textures[9], typeof(Texture2D), true);
+            textures[10] = (Texture2D)EditorGUILayout.ObjectField(new GUIContent(title = "Garden stone wall with door"), textures[10], typeof(Texture2D), true);
+            textures[11] = (Texture2D)EditorGUILayout.ObjectField(new GUIContent(title = "Material 1"), textures[11], typeof(Texture2D), true);
+            textures[12] = (Texture2D)EditorGUILayout.ObjectField(new GUIContent(title = "Material 2"), textures[12], typeof(Texture2D), true);
+            textures[13] = (Texture2D)EditorGUILayout.ObjectField(new GUIContent(title = "Material 3"), textures[13], typeof(Texture2D), true);
+            GUILayout.EndScrollView();
+        }
+        GUILayout.Space(10);
+        if(GUILayout.Button("Load"))
+        {
+            LoadPresets();
         }
         GUILayout.Space(10);
         if (GUILayout.Button("Undo", GUILayout.Height(40)))
@@ -234,6 +293,7 @@ public class BuildingCreatorUI : EditorWindow
             _parent = null;
             active[0] = true;
         }
+        EditorGUILayout.EndScrollView();
 
     }
 
@@ -250,6 +310,10 @@ public class BuildingCreatorUI : EditorWindow
             _initObject.transform.position = _parent.transform.position + start + new Vector3(plusPos.x, plusPos.y, plusPos.z * counter);
         }
         counter++;
+        if(prefubNumber<9)
+        {
+            _initObject.transform.GetChild(0).gameObject.GetComponent<Renderer>().material = currentMaterial;
+        }
         _initObject.transform.eulerAngles = new Vector3(0, rotation, 0);
         current = _initObject;
         currentVector = new Vector3Int((int)_initObject.transform.position.x, (int)_initObject.transform.position.y, (int)_initObject.transform.position.z);
@@ -267,10 +331,45 @@ public class BuildingCreatorUI : EditorWindow
         {
             _initObject.transform.position = start + new Vector3(plusPos.x, plusPos.y, plusPos.z * counter);
         }
+        if (prefubNumber < 9)
+        {
+            _initObject.transform.GetChild(0).gameObject.GetComponent<Renderer>().material = currentMaterial;
+        }
         counter++;
         _initObject.transform.eulerAngles = new Vector3(0, rotation, 0);
         current = _initObject;
         currentVector = new Vector3Int((int)_initObject.transform.position.x, (int)_initObject.transform.position.y, (int)_initObject.transform.position.z);
     }
+
+    public void LoadPresets()
+    {
+        var loadObjectsGame = Resources.LoadAll("BuildingPrefubs/");
+        for(int i = 0; i < loadObjectsGame.Length; i++)
+        {
+            prefubs[i] = (GameObject)loadObjectsGame[i];
+        }
+        var loadObjectIcon = Resources.LoadAll("BuildingIcon/");
+        for( int i = 0;i < loadObjectIcon.Length; i++)
+        {
+            textures[i] = (Texture2D)loadObjectIcon[i];
+        }
+        var loadObjectMaterial = Resources.LoadAll("BuildingMaterial/");
+        for(int i = 0; i< loadObjectMaterial.Length;i++)
+        {
+            materials[i] = (Material)loadObjectMaterial[i];
+        }
+        currentMaterial = materials[0];
+    }
+
+    public void SelectMaterial(int number)
+    {
+        for(int i = 0; i < materialButtonColor.Length; i++) 
+        {
+            materialButtonColor[i] = Color.white;
+        }
+        materialButtonColor[number] = Color.green;
+        currentMaterial = materials[number];
+    }
+
 }
 

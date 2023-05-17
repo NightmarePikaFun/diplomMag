@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-
+#if UNITY_EDITOR
 public class Repairer : EditorWindow
 {
     private GameObject _parent;
@@ -150,3 +150,4 @@ public class Repairer : EditorWindow
         return retObject;
     }
 }
+#endif

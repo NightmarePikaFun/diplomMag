@@ -21,7 +21,7 @@ public class SceneLoader : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Enter");
+        Debug.Log("Enter"); 
         if (other.gameObject.tag == "Player")
         {
             canAcitve = true;

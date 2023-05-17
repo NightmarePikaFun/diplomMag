@@ -11,4 +11,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Palestra.unity
     guid: b58d365608580a743af0b8bf58809e69
-  m_configObjects: {}
+  - enabled: 1
+    path: Assets/Scenes/Arena.unity
+    guid: fa90bd0fd9e6d3242bd05539809d24af
+  m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 3198c1754e3021942a4d724782e046f2,
+      type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 63eca8308878f81479441e6baf69fd9c,
+      type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 2d00a9b87b721ed4caee13ca3d1b09d9,
+      type: 2}
+    xr.sdk.mock-hmd.settings: {fileID: 11400000, guid: 565f0fd07dce7be47bf1ec3cb268feb7,
+      type: 2}

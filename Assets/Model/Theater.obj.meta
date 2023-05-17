@@ -3,7 +3,47 @@ guid: dee969277113830499e5a1fcef3f0f1f
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cube.002_WoodMat
+    second: {fileID: 2100000, guid: 21623f936aff29a4e9930367340f1159, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cube.003_WoodMat
+    second: {fileID: 2100000, guid: 21623f936aff29a4e9930367340f1159, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cube_MaterialMat
+    second: {fileID: 2100000, guid: ec9d852a217463642af460e05d7267be, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cylinder.001_BricksMat
+    second: {fileID: 2100000, guid: eaa50584309b91a4fb5148f1c442149d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cylinder.002_WoodSceneMat
+    second: {fileID: 2100000, guid: dab8014382f3b7e46939ab0901feb494, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cylinder.003_MaterialMat
+    second: {fileID: 2100000, guid: 356617c59a237874ebb138098be85e14, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cylinder.004_Material.005Mat
+    second: {fileID: 2100000, guid: 356617c59a237874ebb138098be85e14, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cylinder_StoneMat
+    second: {fileID: 2100000, guid: 222ad90234c838f44b4bf2c2cd0f476d, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

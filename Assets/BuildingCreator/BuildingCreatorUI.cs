@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
+
 public class BuildingCreatorUI : EditorWindow
 {
     private Texture2D[] textures = new Texture2D[15];
@@ -373,3 +375,4 @@ public class BuildingCreatorUI : EditorWindow
 
 }
 
+#endif

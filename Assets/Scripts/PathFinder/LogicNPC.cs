@@ -24,6 +24,7 @@ public class LogicNPC : MonoBehaviour
     [SerializeField]
     GameObject model;
 
+    private Animator animator;
     private Vector3Int vectorMove;
     private PathNode path;
     private PathNode[] pathLine;
@@ -34,7 +35,9 @@ public class LogicNPC : MonoBehaviour
 
     private void Start()
     {
-        Invoke("RandomizeJob", loadSpeed);
+        aStar = GameObject.FindGameObjectWithTag("Astar");
+        animator = model.GetComponent<Animator>();
+        Invoke("RandomizeJob", loadSpeed); 
     }
 
     // Update is called once per frame
@@ -56,10 +59,10 @@ public class LogicNPC : MonoBehaviour
                     }
                     break;
                 case 1:
-                    OtherJob("Job 1");
+                    OtherJob1("Job 1");
                     break;
                 case 2:
-                    OtherJob("Job 2");
+                    OtherJob2("Job 2");
                     break;
             }
         }
@@ -95,8 +98,11 @@ public class LogicNPC : MonoBehaviour
         transform.Translate(new Vector3(vectorMove.x*Time.deltaTime,0,vectorMove.z*Time.deltaTime)*speed);
     }
 
-    void OtherJob(string jobName/*animated somthing*/)
+    void OtherJob1(string jobName/*animated somthing*/)
     {
+        animator.SetBool("Walk", false);
+        animator.SetBool("Job1", true);
+        animator.SetBool("Job2", false);
         jobTime--;
         if(jobTime<=0)
         {
@@ -105,13 +111,29 @@ public class LogicNPC : MonoBehaviour
         Debug.Log(jobName + " time: " + jobTime);
     }
 
+    void OtherJob2(string jobName/*animated somthing*/)
+    {
+        animator.SetBool("Walk", false);
+        animator.SetBool("Job1", false);
+        animator.SetBool("Job2", true);
+        jobTime--;
+        if (jobTime <= 0)
+        {
+            RandomizeJob();
+        }
+        Debug.Log(jobName + " time: " + jobTime);
+    }
+
     private void RandomizeJob()
     {
-        jobNumber = 0;//Random.Range(0, 3);
+        jobNumber = Random.Range(0, 3);
         if(jobNumber==0)
         {
             if(pathLine!=null)
                 aStar.GetComponent<PathCreator>().DeCheckNodes(pathLine);
+            animator.SetBool("Walk", true);
+            animator.SetBool("Job1", false);
+            animator.SetBool("Job2", false);
             Debug.Log("A* start calc");
             Vector2Int randomEnd = aStar.GetComponent<PathCreator>().CreateRandomPoint();
             path = aStar.GetComponent<PathCreator>().Astar(start, randomEnd);
@@ -120,14 +142,14 @@ public class LogicNPC : MonoBehaviour
             pathIndex = 0;
             CreatePathLine(path);
         }
-        jobTime = Random.Range(600, 601);
+        jobTime = Random.Range(200, 1000);
         canStart = true;
     }
 
     bool CheckPosition(Vector3 current, Vector3 target)
     {
         bool retValue = false;
-        if(Mathf.Abs(current.x - target.x)<0.01 && Mathf.Abs(current.y - target.y) < 0.01 && Mathf.Abs(current.z - target.z) < 0.01)
+        if(Mathf.Abs(current.x - target.x)<0.01 && Mathf.Abs(current.y - target.y) < 10 && Mathf.Abs(current.z - target.z) < 0.01)
         {
             retValue = true;
             Debug.Log("Next Point Selected");
@@ -164,19 +186,19 @@ public class LogicNPC : MonoBehaviour
     {
         if(vectorMove.x>0)
         {
-            model.transform.Rotate(new Vector3(0,90,0));
+            model.transform.eulerAngles = new Vector3(0, 90, 0);// Quaternion.EulerAngles(new Vector3(0,90,0));
         }
         else if(vectorMove.x<0)
         {
-            model.transform.Rotate(new Vector3(0, -90, 0));
+            model.transform.eulerAngles = new Vector3(0, 270, 0);//Quaternion.EulerAngles(new Vector3(0, 270, 0));
         }
         else if(vectorMove.z<0)
         {
-            model.transform.Rotate(new Vector3(0, -180, 0));
+            model.transform.eulerAngles = new Vector3(0, 180, 0);
         }
         else if(vectorMove.z>0)
         {
-            model.transform.Rotate(new Vector3(0, 0, 0));
+            model.transform.eulerAngles =  new Vector3(0, 360, 0);
         }
     }
     //-90 -x

@@ -25,10 +25,12 @@ public class NPCLogic : MonoBehaviour
     [SerializeField]
     private GameObject villager;
 
+    private Animator animator;
     private Vector2 stableVector = new Vector2(0, 1);
     // Start is called before the first frame update
     void Start()
     {
+        animator = villager.GetComponent<Animator>();
         positionWalk = transform.transform.position;
         CheckPosition();
     }
@@ -45,18 +47,46 @@ public class NPCLogic : MonoBehaviour
                 }
             case LogicType.Talk:
                 {
+                    Talk();
                     break;
                 }
             case LogicType.Sport:
                 {
+                    Sport();
                     break;
                 }
             case LogicType.Funny:
                 {
+                    Funny();
                     break;
                 }
         }
 
+    }
+
+
+    void Talk()
+    {
+        animator.SetBool("Talk", true);
+        animator.SetBool("Walk", false);
+        animator.SetBool("Sport", false);
+        animator.SetBool("Funny", false);
+    }
+
+    void Sport()
+    {
+        animator.SetBool("Talk", false);
+        animator.SetBool("Walk", false);
+        animator.SetBool("Sport", true);
+        animator.SetBool("Funny", false);
+    }
+
+    void Funny()
+    {
+        animator.SetBool("Talk", false);
+        animator.SetBool("Walk", false);
+        animator.SetBool("Sport", false);
+        animator.SetBool("Funny", true);
     }
 
     private void WalkingLogic()
@@ -86,11 +116,12 @@ public class NPCLogic : MonoBehaviour
 
     private void Rotating()
     {
+        float angle = Vector3.Angle(normalized, stableVector);
         float ab = normalized.x * stableVector.x + normalized.z * stableVector.y;
         float a = Mathf.Sqrt(normalized.x*normalized.x+normalized.z*normalized.z);
         float b = Mathf.Sqrt(stableVector.x * stableVector.x + stableVector.y * stableVector.y);
         float c = Mathf.Acos(ab / (a * b));
-        villager.transform.rotation = Quaternion.EulerAngles(new Vector3(0, c, 0));
+        villager.transform.eulerAngles = new Vector3(0, angle, 0);
 
         //TODO поворот для каждой точки
     }

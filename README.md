@@ -12,7 +12,7 @@
 * https://drive.google.com/file/d/1se5cI1jyJA0wO-voJvF-N4vlEV_R6eQm/view?usp=sharing
 
 Управление:
-  Поворот камеры - мышь.
-  Перемещение - W/S.
-  Взаимодействие - F.
-  Выход - ESC.
+ * Поворот камеры - мышь.
+ * Перемещение - W/S.
+ * Взаимодействие - F.
+ * Выход - ESC.

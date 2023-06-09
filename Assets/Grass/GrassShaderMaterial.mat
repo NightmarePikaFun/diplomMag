@@ -54,9 +54,9 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Scale: 0.3
-    - _Smooth: 0.163
-    - _Speed: 0.75
+    - _Scale: 0.5
+    - _Smooth: 0.139
+    - _Speed: 1
     m_Colors:
     - _Albedo: {r: 0.72800034, g: 0.8962264, b: 0.35088107, a: 0}
   m_BuildTextureStacks: []

@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     [SerializeField]
+    private GameObject helperCanvas;
+    [SerializeField]
     private GameObject moveHelper;
     [SerializeField]
     private int speed;
@@ -29,6 +31,10 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.F1))
+        {
+            helperCanvas.active = !helperCanvas.active;
+        }
         if(Input.GetKey(KeyCode.Escape))
         {
             Application.Quit();
